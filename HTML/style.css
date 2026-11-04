@@ -1,0 +1,20 @@
+body{
+    background-color: antiquewhite;
+}
+
+#basic_link{
+    text-align: right;
+}
+#main_form, #image_form{
+    text-align: center;
+    color: rgb(145, 121, 93);
+}
+
+input{
+    border-radius: 12px;
+}
+input[type="submit"]{
+    color: white;
+    background-color: #4285F4;
+    border-color: #4285F4   ;
+}
