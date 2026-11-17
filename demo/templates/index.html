@@ -1,0 +1,77 @@
+{% extends "layout.html" %}
+
+{% block body %}
+    <div class="center-container">
+        <div id="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="tasks-tbody">
+                    <!-- {% for task in tasks %}
+                        <tr>
+                            <td>{{ task.task_name }}</td>
+                            <td>{{ task.status }}</td>
+                            <td>
+                                <button onclick="toggleTask( {{ task.id }})">Toggle</button>
+                            </td>
+                        </tr>
+                    {% endfor %} -->
+                </tbody>
+            </table>
+        </div>
+        <hr>
+        <form action="/task/create" method="post">
+            <input type="text" name="task_name">
+            <br>
+            <input type="checkbox" name="status_check"> Already done
+            <br>
+            <input type="submit">
+        </form>
+    </div>
+    <script>
+
+        async function refreshTable() {
+            // Version HTML
+            // const response = await fetch('/tasks');
+            // console.log(response);
+            // const html = await response.text();
+            // console.log(html);
+            // document.getElementById('table-container').innerHTML = html;
+            
+            // Version JSON
+            const response = await fetch('/tasks');
+            console.log(response);
+            const tasks = await response.json();
+            console.log(tasks);
+
+            const tbody = document.getElementById('tasks-tbody');
+            const table = tasks.map(function(task) {
+                return `
+                    <tr>
+                        <td>${task.task_name}</td>
+                        <td>${task.status}</td>
+                        <td>
+                            <button onclick="toggleTask( ${ task.id })">Toggle</button>
+                        </td>
+                    </tr>
+                `;
+            });
+            console.log(table);
+            tbody.innerHTML = table.join('\n');
+
+        }
+
+        async function toggleTask(id) {
+            // window.location = `/toggle/${id}`;
+            await fetch(`/toggle/${id}`, { method: 'POST'});
+            await refreshTable();
+        }
+
+        refreshTable();
+    </script>
+{% endblock %}
